@@ -27,23 +27,21 @@ func main() {
 	mr.Worker(mapf, reducef)
 }
 
-//
-// load the application Map and Reduce functions
+// load the application MAP and REDUCE functions
 // from a plugin file, e.g. ../mrapps/wc.so
-//
 func loadPlugin(filename string) (func(string, string) []mr.KeyValue, func(string, []string) string) {
 	p, err := plugin.Open(filename)
 	if err != nil {
 		log.Fatalf("cannot load plugin %v", filename)
 	}
-	xmapf, err := p.Lookup("Map")
+	xmapf, err := p.Lookup("MAP")
 	if err != nil {
-		log.Fatalf("cannot find Map in %v", filename)
+		log.Fatalf("cannot find MAP in %v", filename)
 	}
 	mapf := xmapf.(func(string, string) []mr.KeyValue)
-	xreducef, err := p.Lookup("Reduce")
+	xreducef, err := p.Lookup("REDUCE")
 	if err != nil {
-		log.Fatalf("cannot find Reduce in %v", filename)
+		log.Fatalf("cannot find REDUCE in %v", filename)
 	}
 	reducef := xreducef.(func(string, []string) string)
 
